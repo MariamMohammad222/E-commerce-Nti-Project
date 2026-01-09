@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/routing/routes.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
+
 import 'dart:async';
 import '../../../../core/extensions/navigation_extensions.dart';
 

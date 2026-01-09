@@ -24,7 +24,7 @@ class AppTheme {
        error: Colors.red, // اللون الخاص بالأخطاء
        onPrimary: Colors.white, // اللون عند استخدام الـ primary
        onSecondary: Colors.black, // اللون عند استخدام الـ secondary
-       onSurface: AppColor.grayColor, // اللون عند استخدام الـ background
+       onSurface: AppColor.isideTextFieldColor, // اللون عند استخدام الـ background
        onError: Colors.white, // اللون عند استخدام الـ error
        brightness: Brightness.light, // مستوى السطوع (فاتح أو غامق)
      ),

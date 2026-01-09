@@ -17,7 +17,7 @@ dependencies:
   equatable:
   get_it:
   cached_network_image:
-  flutter_screenutil:
+  flutter_screenutil: ^5.9.3
   flutter_animate:
   freezed_annotation:
   json_annotation:
@@ -30,6 +30,8 @@ dependencies:
   dartz:
   flutter_svg:
   cupertino_icons:
+  smooth_page_indicator: ^2.0.1
+  carousel_slider: ^5.1.1
 
 dev_dependencies:
   flutter_test:

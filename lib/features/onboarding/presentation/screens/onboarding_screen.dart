@@ -1,109 +1,114 @@
 import 'package:flutter/material.dart';
-
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-
+import 'package:nti_project_final/core/constants/appFonts.dart';
+import 'package:nti_project_final/core/theme/app_colors.dart';
+import 'package:nti_project_final/features/onboarding/presentation/screens/models/onboardingModel.dart';
+import 'package:nti_project_final/features/onboarding/presentation/widgets/onboardingWidget.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
- const OnboardingScreen({super.key});
+   OnboardingScreen({super.key});
 
-
- @override
- State<OnboardingScreen> createState() => _OnboardingScreenState();
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
-
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
- final controller = PageController();
- bool isLastPage = false;
+  List onboardingPages = [
+    Onboardingmodel(
+      image: 'assets/images/fashion shop-rafiki 1.png',
+      title: 'Choose Products',
+      body: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.',
+    ),
+    Onboardingmodel(
+      image: 'assets/images/Sales consulting-pana1.png',
+      title: 'Make Payment',
+      body: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.',
+    ),
+    Onboardingmodel(
+      image: 'assets/images/Shopping bag-rafiki1.png',
+      title: 'Get Your Order',
+      body: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.',
+    ),
+  ];
+
+final PageController _pageController = PageController();
+  int currentPage = 0;
+ void _nextPage() {
+    if (currentPage < onboardingPages.length - 1) {
+      _pageController.nextPage(
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
+    } else {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => OnboardingScreen()));
+    }
+  }
+
+  void _prevPage() {
+    if (currentPage > 0) {
+      _pageController.previousPage(
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
+    }
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body:  Column(
+          children: [
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: onboardingPages.length,
+                  onPageChanged: (value) {
+              setState(() {
+                currentPage = value;
+              });
+                        },
+              itemBuilder:(context, index) {
+              return Onboardingwidget(onboardingmodel: onboardingPages[index],);
+                        },),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+               TextButton(onPressed: (){
+                _prevPage();
+               }, child: Text('prev', style: Appfonts.textStylegrey.copyWith(fontSize: 18,fontWeight: FontWeight.w600),)),
+                SmoothPageIndicator(    
+                          controller: _pageController,  // PageController    
+                          count: onboardingPages.length, 
+                          effect: WormEffect(
+                dotHeight: 10,
+                activeDotColor: AppColor.primaryColor,
+                          ),  // your preferred effect    
+                          onDotClicked: (index) {    
+                _pageController.animateToPage(
+                        index,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.ease,
+                );
+                          },
+                        ),
+                TextButton(onPressed: (){
+                    _nextPage();
+                  }, child: Text(currentPage == onboardingPages.length -1 ? 'Get Started' : 'Next', style: Appfonts.textStylepink.copyWith(fontSize: 18),)),
+                
+                    
+
+            
 
 
- @override
- void dispose() {
-   controller.dispose();
-   super.dispose();
- }
+          
+              ]
+        ),
+        SizedBox(height: 40.h,),
+          ]
+      )
+      
+      
+    
+         
 
-
- @override
- Widget build(BuildContext context) {
-   return Scaffold(
-     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-     body: Padding(
-       padding: EdgeInsets.symmetric(horizontal: 24.w),
-       child: Column(
-         children: [
-           SizedBox(height: 60.h),
-           Expanded(
-             child: PageView(
-               controller: controller,
-               onPageChanged: (index) => setState(() => isLastPage = index == 2),
-               children: const [
-                 OnboardPage(title: 'Welcome', description: 'This is onboarding 1'),
-                 OnboardPage(title: 'Explore', description: 'This is onboarding 2'),
-                 OnboardPage(title: 'Start', description: 'This is onboarding 3'),
-               ],
-             ),
-           ),
-   
-           SizedBox(height: 20.h),
-           SizedBox(
-             width: double.infinity,
-             child: ElevatedButton(
-               onPressed: () {
-                 if (isLastPage) {
-                 } else {
-                   controller.nextPage(
-                     duration: const Duration(milliseconds: 500),
-                     curve: Curves.easeInOut,
-                   );
-                 }
-               },
-               child: Text(isLastPage ? 'Get Started' : 'Next'),
-             ),
-           ),
-           SizedBox(height: 40.h),
-         ],
-       ),
-     ),
-   );
- }
+    );
+  }
 }
-
-
-class OnboardPage extends StatelessWidget {
- final String title;
- final String description;
- const OnboardPage({super.key, required this.title, required this.description});
-
-
- @override
- Widget build(BuildContext context) {
-   return Padding(
-     padding: EdgeInsets.symmetric(horizontal: 24.w),
-     child: Column(
-       mainAxisAlignment: MainAxisAlignment.center,
-       children: [
-         Icon(Icons.flutter_dash, size: 120.r),
-         SizedBox(height: 20.h),
-         Text(
-           title,
-           style: GoogleFonts.nunito(
-             fontSize: 26.sp,
-             fontWeight: FontWeight.bold,
-           ),
-         ),
-         SizedBox(height: 12.h),
-         Text(
-           description,
-           textAlign: TextAlign.center,
-           style: GoogleFonts.nunito(fontSize: 16.sp),
-         ),
-       ],
-     ),
-   );
- }
-}
-
-
