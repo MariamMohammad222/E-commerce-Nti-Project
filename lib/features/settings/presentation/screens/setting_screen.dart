@@ -1,3 +1,6 @@
+import 'package:final_project/Screens/about_us_screen.dart';
+import 'package:final_project/Screens/contact_us_screen.dart';
+import 'package:final_project/Screens/privacy_policy_screen.dart';
 import 'package:flutter/material.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -115,13 +118,30 @@ class _SettingScreenState extends State<SettingScreen> {
                       'Payment Methods',
                       () {},
                     ),
-                    _settingsItem(
-                      Icons.shield_outlined,
-                      'Privacy Policy',
-                      () {},
-                    ),
-                    _settingsItem(Icons.info_outline, 'About Us', () {}),
-                    _settingsItem(Icons.mail_outline, 'Contact Us', () {}),
+                    _settingsItem(Icons.shield_outlined, 'Privacy Policy', () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PrivacyPolicyScreen(),
+                        ),
+                      );
+                    }),
+                    _settingsItem(Icons.info_outline, 'About Us', () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AboutUsScreen(),
+                        ),
+                      );
+                    }),
+                    _settingsItem(Icons.mail_outline, 'Contact Us', () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ContactUsScreen(),
+                        ),
+                      );
+                    }),
                   ],
                 ),
               ),
