@@ -1,7 +1,9 @@
-import 'package:final_project/Screens/about_us_screen.dart';
-import 'package:final_project/Screens/contact_us_screen.dart';
-import 'package:final_project/Screens/privacy_policy_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:nti_project_final/features/settings/presentation/screens/about_us_screen.dart';
+import 'package:nti_project_final/features/settings/presentation/screens/contact_us_screen.dart';
+import 'package:nti_project_final/features/settings/presentation/screens/privacy_policy_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nti_project_final/core/theme/app_theme_cubit.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -11,25 +13,19 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  bool isDarkMode = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         title: const Text(
           'Settings',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -80,15 +76,27 @@ class _SettingScreenState extends State<SettingScreen> {
                       color: Color(0xffF13B96),
                     ),
                     const SizedBox(width: 12),
-                    const Text('Dark Mode', style: TextStyle(fontSize: 16)),
+                    const Text(
+                      'Dark Mode',
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                    ),
                     const Spacer(),
-                    Switch(
-                      value: isDarkMode,
-                      activeColor: Color(0xffF13B96),
-                      onChanged: (value) {
-                        setState(() {
-                          isDarkMode = value;
-                        });
+                    BlocBuilder<AppThemeCubit, ThemeMode>(
+                      builder: (context, themeMode) {
+                        final isDark = themeMode == ThemeMode.dark ||
+                            (themeMode == ThemeMode.system &&
+                                MediaQuery.of(context).platformBrightness ==
+                                    Brightness.dark);
+
+                        return Switch(
+                          value: isDark,
+                          activeColor: const Color(0xffF13B96),
+                          onChanged: (value) {
+                            context.read<AppThemeCubit>().changeAppTheme(
+                                  value ? ThemeMode.dark : ThemeMode.light,
+                                );
+                          },
+                        );
                       },
                     ),
                   ],
