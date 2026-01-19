@@ -90,7 +90,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
                         return Switch(
                           value: isDark,
-                          activeColor: const Color(0xffF13B96),
+                          activeThumbColor: const Color(0xffF13B96),
                           onChanged: (value) {
                             context.read<AppThemeCubit>().changeAppTheme(
                                   value ? ThemeMode.dark : ThemeMode.light,
@@ -172,7 +172,42 @@ class _SettingScreenState extends State<SettingScreen> {
                     'Log Out',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Log out'),
+                        content: const Text(
+                          'Are you sure you want to log out?',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text(
+                              'Cancel',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ),
+                                (route) => false,
+                              );
+                            },
+                            child: const Text(
+                              'Log out',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
