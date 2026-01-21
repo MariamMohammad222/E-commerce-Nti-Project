@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nti_project_final/core/constants/appFonts.dart';
 import 'package:nti_project_final/core/theme/app_colors.dart';
+import 'package:nti_project_final/features/home/presentation/screens/bottomNvigationbar.dart';
+import 'package:nti_project_final/features/home/presentation/screens/homeScreen.dart';
 import 'package:nti_project_final/features/onboarding/presentation/screens/models/onboardingModel.dart';
 import 'package:nti_project_final/features/onboarding/presentation/widgets/onboardingWidget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:nti_project_final/core/utils/app_shared_preferences.dart';
+import 'package:nti_project_final/features/auth/presentation/screens/LoginScreen.dart';
 
 class OnboardingScreen extends StatefulWidget {
    OnboardingScreen({super.key});
@@ -39,8 +43,9 @@ final PageController _pageController = PageController();
       _pageController.nextPage(
           duration: Duration(milliseconds: 500), curve: Curves.ease);
     } else {
+      AppSharedPreferences.saveOnboarding(true);
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => OnboardingScreen()));
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
     }
   }
 
